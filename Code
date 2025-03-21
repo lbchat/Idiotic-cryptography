@@ -1,0 +1,58 @@
+def encrypt_phrase(phrase, keyword, offset):
+   # 1. Substitution (Vowels and Keyword Cipher)
+  vowel_substitutions = {
+      'a': '@',
+      'e': '#',
+      'i': '!',
+      'o': '%',
+      'u': '*'
+  }
+  phrase = ''.join([vowel_substitutions.get(char, char) for char in phrase])
+
+  # 2. Transposition (Word Reversal)
+  words = phrase.split()
+  phrase = ' '.join(words[::-1])  # Reverse word order
+
+  # 3. Numerical Offset with Keyword
+  keyword_len = len(keyword)
+  encrypted_phrase = ''
+  for i, char in enumerate(phrase):
+    if 'a' <= char.lower() <= 'z':
+      key_shift = ord(keyword[i % keyword_len].lower()) - ord('a')
+      shifted_char = chr((ord(char.lower()) - ord('a') + key_shift + offset) % 26 + ord('a'))
+      encrypted_phrase += shifted_char.upper() if char.isupper() else shifted_char
+    else:
+      encrypted_phrase += char
+
+
+  # Two-letter substitution (before word boundary marking)
+  words = encrypted_phrase.split()
+  letter_substitutions = {}
+  for i in range(len(words) - 1):
+    letter_pair = words[i][-1] + words[i + 1][0]
+    substitution_number = sum(ord(char) for char in letter_pair)
+    letter_substitutions[letter_pair] = str(substitution_number)
+
+  encrypted_phrase = ' '.join(words)  # Join words back with spaces
+  for letter_pair, substitution_number in letter_substitutions.items():
+    encrypted_phrase = encrypted_phrase.replace(letter_pair, substitution_number)
+
+  # Word boundary marking
+  words = encrypted_phrase.split()
+  final_phrase = ""
+  for i in range(len(words)):
+    final_phrase += words[i]
+    if i < len(words) - 1:
+      boundary_number = sum(ord(char) for char in (words[i][-1] + words[i + 1][0]))
+      final_phrase += str(boundary_number)
+
+  return final_phrase
+
+
+  phrase = "Pessoas pequena conversam sobre pessoas. Pessoas médias conversam sobre coisas. Pessoas grandes conversam sobre idéias."
+keyword = "SECRET"
+offset = 5
+
+encrypted_phrase = encrypt_phrase(phrase, keyword, offset)
+print("Original Phrase:", phrase)
+print("Encrypted Phrase:", encrypted_phrase)  # Output with no spaces and numerical word boundaries
