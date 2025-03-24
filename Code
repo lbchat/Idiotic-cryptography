@@ -48,11 +48,14 @@ def encrypt_phrase(phrase, keyword, offset):
 
   return final_phrase
 
+# Get user input
+user_phrase = input("Enter the phrase you want to encrypt: ")
+keyword = "SECRET"  # You can change the keyword if desired
+offset = 5  # You can change the offset if desired
 
-  phrase = "Pessoas pequena conversam sobre pessoas. Pessoas médias conversam sobre coisas. Pessoas grandes conversam sobre idéias."
-keyword = "SECRET"
-offset = 5
+# Encrypt the user's phrase
+encrypted_phrase = encrypt_phrase(user_phrase, keyword, offset)
 
-encrypted_phrase = encrypt_phrase(phrase, keyword, offset)
-print("Original Phrase:", phrase)
-print("Encrypted Phrase:", encrypted_phrase)  # Output with no spaces and numerical word boundaries
+# Print the original and encrypted phrases
+print("Original Phrase:", user_phrase)
+print("Encrypted Phrase:", encrypted_phrase)
